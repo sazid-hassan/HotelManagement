@@ -16,18 +16,23 @@ export default function RoomCard(props) {
 
         <Box
             sx={{
-                boxShadow: 12,
+                // boxShadow: 5,
                 m: 2,
+                cursor: "pointer"
+            }}
+            // height="120"
+            onClick={() => {
+                history.push(`/details/${props.id}`)
             }}
 
         >
-            <Card sx={{ maxWidth: 335 }}>
+            <Card sx={{ maxWidth: 300 }}>
 
                 <CardMedia
                     component="img"
-                    height="194"
                     image={props.img}
                     alt={props.name}
+                    height="140"
                 />
                 <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
                     <span style={{ margin: 15, color: "#6e7475" }}>
@@ -43,8 +48,11 @@ export default function RoomCard(props) {
                     </span>
                 </Typography>
                 <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        {props.desc}
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                    >
+                        {props.desc.length > 50 ? `${props.desc.slice(0, 50)}...` : props.desc}
                     </Typography>
                 </CardContent>
                 <CardActions>

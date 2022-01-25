@@ -18,13 +18,14 @@ import List from './Pages/List';
 import Finalize from './Pages/Finalize';
 import Booking from './Pages/bookings/Booking';
 import Failed from './Pages/SignManager/Failed';
+import Details from './Pages/details/Details';
 
 
 export const UserContext = createContext();
 
 function App() {
 
-	// const [billAmount, setBillAmount] = useState(0);
+
 	const [loggedInUser, setLoggedInUser] = useState({});
 
 
@@ -34,21 +35,7 @@ function App() {
 				<div>
 					<Nav />
 					<Container>
-						{/* <Box>
-							<Fab
-								variant="extended"
-								size="medium"
-								color="success"
-								aria-label="add"
-								style={{
-									float: 'right',
 
-								}}
-							>
-								{billAmount}৳
-							</Fab>
-
-						</Box> */}
 						<Switch>
 							<Route exact path="/">
 								<Home />
@@ -58,6 +45,9 @@ function App() {
 							</Route>
 							<Route exact path="/failed">
 								<Failed />
+							</Route>
+							<Route exact path="/details/:id">
+								<Details />
 							</Route>
 							<PrivateRoute exact path="/dashboard">
 								<Dashboard />
@@ -71,6 +61,7 @@ function App() {
 							<PrivateRoute exact path='/bookings'>
 								<Booking />
 							</PrivateRoute>
+
 						</Switch>
 					</Container>
 				</div>

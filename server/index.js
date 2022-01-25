@@ -6,9 +6,17 @@ const bodyParser = require('body-parser');
 
 const cors = require('cors');
 
+require('dotenv').config();
+
+console.log(process.env.DB_PASS);
+
 const app = express();
 
+
 var serviceAccount = require("./jm-auth-98220-firebase-adminsdk-s7i07-866a97f01a.json");
+
+var serviceAccount = require("./jm-auth-98220-firebase-adminsdk-s7i07-866a97f01a.json");
+
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -21,7 +29,8 @@ app.use(bodyParser.json());
 
 const { MongoClient } = require('mongodb');
 
-const uri = "mongodb+srv://hotel:hotel@cluster0.cjree.mongodb.net/hotel_management?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.cjree.mongodb.net/hotel_management?retryWrites=true&w=majority`;
+
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
@@ -37,11 +46,38 @@ client.connect(err => {
     });
 
     app.get('/bookings', (req, res) => {
-        console.log(req.headers.authorization);
-        bookings.find({ mail: req.query.mail })
-            .toArray((err, documents) => {
-                res.send(documents);
-            })
+
+
+        const bearer = req.headers.authorization;
+
+        if (bearer && bearer.startsWith('Bearer ')) {
+            const idToken = bearer.split(' ')[1];
+
+            admin.auth().verifyIdToken(idToken)
+                .then(function (decodeToken) {
+                    let tokenEmail = decodeToken.email;
+
+                    if (tokenEmail == req.query.mail) {
+                        bookings.find({ mail: req.query.mail })
+                            .toArray((err, documents) => {
+                                res.send(documents);
+                                console.log("Error : " + err);
+                            })
+                    }
+                    else {
+                        res.status(401).send("Unauthorized Access");
+                    }
+                })
+                .catch(function (err) {
+                    res.status(401).send("Unauthorized Access");
+
+                })
+        }
+        else {
+            res.status(401).send("Unauthorized Access");
+        }
+
+
     })
 
 });

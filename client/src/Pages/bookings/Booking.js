@@ -25,11 +25,13 @@ const Booking = () => {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                authorization: `Bearer ${sessionStorage.getItem('token')}`
+                authorization: `Bearer ${sessionStorage.getItem('token')}`,
             }
         })
             .then(res => res.json())
-            .then(data => setBookings(data));
+            .then(data => {
+                setBookings(data)
+            });
     }, [loggedUser])
 
     return <div>

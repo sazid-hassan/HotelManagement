@@ -81,7 +81,7 @@ function SignIn_Up() {
         }
     }
 
-    const gSign = () => {
+    function gSign() {
         GoogleSignIn()
             .then(res => {
                 setUser(res);

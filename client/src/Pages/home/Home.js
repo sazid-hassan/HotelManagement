@@ -48,6 +48,8 @@ const Home = () => {
                         img={rm.img}
                         price={rm.price}
                         key={rm.id}
+                        id={rm.id}
+
                     />
                 )
             }
